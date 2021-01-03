@@ -51,7 +51,13 @@ parser.add_option(
     "--config-file",
     action="store",
     dest="config_file",
-    help="Path to config file to override default Orbi file"
+    help="Path to config file to override default Orbi file",
+)
+parser.add_option(
+    "--custom-dns-ip",
+    action="store",
+    dest="custom_dns_ip",
+    help="IPv4 address of your custom DNS server that you want your Orbi to push via DHCP",
 )
 
 
