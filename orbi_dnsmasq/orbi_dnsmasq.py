@@ -9,7 +9,7 @@ USERNAME = "admin"
 
 
 def telnet_write(tn, _str, wait_until):
-    tn.write((_str + "\n").encode('utf-8'))
+    tn.write((_str + "\n").encode("utf-8"))
     telnet_read_until(tn, wait_until)
 
 
@@ -17,7 +17,7 @@ def telnet_read_until(tn, str_regex):
     regex_list = [str_regex]
     if isinstance(str_regex, list):
         regex_list = str_regex
-    tn.expect([re.compile(s.encode('utf-8')) for s in regex_list], timeout=5)
+    tn.expect([re.compile(s.encode("utf-8")) for s in regex_list], timeout=5)
 
 
 def telnet_into_router(_host, _user, _pass):
@@ -65,19 +65,22 @@ def reboot_dns(tn):
     telnet_write(
         tn,
         "/usr/sbin/dnsmasq --except-interface=lo -r /tmp/resolv.conf --addn-hosts=/tmp/dhcpd_hostlist",
-        "#"
+        "#",
     )
 
+
 def upload_config_file(tn, file_path):
-    with  open(file_path, "r") as f:
+    with open(file_path, "r") as f:
         content = f.read()
         print("Applying the following configuration: \n{}".format(content))
-        telnet_write(tn, "cat <<EOF > /etc/dnsmasq.conf\n{}\nEOF\n".format(content), "#")
+        telnet_write(
+            tn, "cat <<EOF > /etc/dnsmasq.conf\n{}\nEOF\n".format(content), "#"
+        )
         print("\n new config uploaded")
 
 
 def get_web_ts(host, username, password):
-    r = requests.get(f'http://{host}/debug_detail.htm', auth=(username, password))
+    r = requests.get(f"http://{host}/debug_detail.htm", auth=(username, password))
     results = re.search('ts="(\d+)', r.text)
     if results:
         print(f"ts={results.group(1)}")
@@ -88,18 +91,22 @@ def get_web_ts(host, username, password):
 
 def enable_telnet(host, username, password):
     ts = get_web_ts(host, username, password)
-    r = requests.post(f'http://{host}/apply.cgi?/debug_detail.htm%20timestamp={ts}', 
-                      auth=(username, password),
-                      data={'submit_flag':'debug_info', 'hid_telnet':'1', 'enable_telnet':'on'})
+    r = requests.post(
+        f"http://{host}/apply.cgi?/debug_detail.htm%20timestamp={ts}",
+        auth=(username, password),
+        data={"submit_flag": "debug_info", "hid_telnet": "1", "enable_telnet": "on"},
+    )
     print(f"telnet enable {r.status_code}")
     return r.status_code == 200
 
 
 def disable_telnet(host, username, password):
     ts = get_web_ts(host, username, password)
-    r = requests.post(f'http://{host}/apply.cgi?/debug_detail.htm%20timestamp={ts}', 
-                      auth=(username, password),
-                      data={'submit_flag':'debug_info', 'hid_telnet':'0'})
+    r = requests.post(
+        f"http://{host}/apply.cgi?/debug_detail.htm%20timestamp={ts}",
+        auth=(username, password),
+        data={"submit_flag": "debug_info", "hid_telnet": "0"},
+    )
     print(f"telnet disable {r.status_code}")
     return r.status_code == 200
 
@@ -107,8 +114,8 @@ def disable_telnet(host, username, password):
 def script_main(options, _):
     _pass = options.password
     if _pass is None:
-        _pass = getpass('Password: ')
-    
+        _pass = getpass("Password: ")
+
     if options.toggle_telnet:
         enable_telnet(options.address, USERNAME, _pass)
 
