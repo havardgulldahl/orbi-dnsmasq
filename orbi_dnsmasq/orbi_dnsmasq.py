@@ -37,7 +37,25 @@ def download_hosts_file_into_router(tn, dns_hosts_url):
 
 def activate_hosts_file(tn):
     print("removing `no-hosts` from `/etc/dnsmasq.conf`")
-    telnet_write(tn, "sed -i 's/no-hosts//g' /etc/dnsmasq.conf", "#")  # Edge case: line not present
+    telnet_write(
+        tn, "sed -i 's/no-hosts//g' /etc/dnsmasq.conf", "#"
+    )  # Edge case: line not present
+
+
+def update_custom_dns_ip(tn, ip):
+    # https://www.reddit.com/r/orbi/comments/dzc90v/how_to_push_a_custom_dns_server_ip_to_your_devices/
+    print("updating custom dns ip `%s` in `/tmp/udhcpd.conf`" % ip)
+    telnet_write(
+        tn,
+        "sed -i 's/^option\ dns\ 192.168.1.1$/option dns %s/g' /tmp/udhcpd.conf" % ip,
+        "#",
+    )  # Edge case: line not present
+    print("restarting `udhcpd` daemon")
+    telnet_write(
+        tn,
+        """ps -p `cat /var/run/udhcpd.pid` && kill `cat /var/run/udhcpd.pid` && udhcpd /tmp/udhcpd.conf""",
+        "#",
+    )
 
 
 def reboot_dns(tn):

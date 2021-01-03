@@ -5,7 +5,7 @@
 
 [![PyPI version](https://badge.fury.io/py/orbi-dnsmasq.svg)](https://badge.fury.io/py/orbi-dnsmasq)
 
-Python command to update dnsmasq configuration file and / or set hosted hosts file on your Netgear Orbi router.
+Python command to update dnsmasq configuration file and / or set hosted hosts file / or distribute the ip to your custom dns server on your Netgear Orbi router.
 
 ## Description
 
