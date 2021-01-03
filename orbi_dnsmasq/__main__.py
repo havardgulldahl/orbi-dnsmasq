@@ -3,6 +3,7 @@ from orbi_dnsmasq.orbi_dnsmasq import script_main
 
 DEFAULT_DNS_HOSTS_FILE = "https://someonewhocares.org/hosts/hosts"
 
+
 parser = OptionParser()
 parser.add_option(
     "-d",
@@ -10,7 +11,7 @@ parser.add_option(
     action="store_true",
     default=False,
     dest="download_hosts",
-    help="Download dns-hosts file"
+    help="Download dns-hosts file",
 )
 parser.add_option(
     "-u",
@@ -19,14 +20,14 @@ parser.add_option(
     default=DEFAULT_DNS_HOSTS_FILE,
     dest="dns_hosts_url",
     help="Url to download dns-hosts file",
-    type="string"
+    type="string",
 )
 parser.add_option(
     "-t",
     "--toggle",
     action="store_true",
     dest="toggle_telnet",
-    help="Toggle telnet service on the orbi debug site with selenium"
+    help="Toggle telnet service on the orbi debug site with selenium",
 )
 parser.add_option(
     "-a",
@@ -35,7 +36,7 @@ parser.add_option(
     default="orbilogin.com",
     dest="address",
     help="IP or hostname of your router",
-    type="string"
+    type="string",
 )
 parser.add_option(
     "-p",
@@ -44,7 +45,7 @@ parser.add_option(
     default=None,
     dest="password",
     help="The password for the admin user (warning: insecure, watch out for your terminal's history)",
-    type="string"
+    type="string",
 )
 parser.add_option(
     "-c",
@@ -64,6 +65,7 @@ parser.add_option(
 def command_line_main():
     (param_options, args) = parser.parse_args()
     script_main(param_options, args)
+
 
 if __name__ == "__main__":
     command_line_main()
