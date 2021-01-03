@@ -119,13 +119,15 @@ def script_main(options, _):
     if options.toggle_telnet:
         enable_telnet(options.address, USERNAME, _pass)
 
-    if options.config_file or options.download_hosts:
+    if options.config_file or options.download_hosts or options.custom_dns_ip:
         tn = telnet_into_router(options.address, USERNAME, _pass)
         if options.config_file:
             upload_config_file(tn, options.config_file)
         if options.download_hosts:
             download_hosts_file_into_router(tn, options.dns_hosts_url)
             activate_hosts_file(tn)
+        if options.custom_dns_ip:
+            update_custom_dns_ip(tn, options.custom_dns_ip)
         reboot_dns(tn)
         tn.close()
 
