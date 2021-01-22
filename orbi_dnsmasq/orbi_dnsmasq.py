@@ -53,7 +53,7 @@ def update_custom_dns_ip(tn, ip):
     print("restarting `udhcpd` daemon")
     telnet_write(
         tn,
-        """ps -p `cat /var/run/udhcpd.pid` && kill `cat /var/run/udhcpd.pid` && udhcpd /tmp/udhcpd.conf""",
+        """kill `cat /var/run/udhcpd.pid` && udhcpd /tmp/udhcpd.conf""",
         "#",
     )
 
